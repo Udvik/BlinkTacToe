@@ -13,6 +13,7 @@ const EMOJI_CATEGORIES = {
 
 function App() {
   const [players, setPlayers] = useState({ 1: '', 2: '' });
+  const [score, setScore] = useState({ 1: 0, 2: 0 });
   const [turn, setTurn] = useState(1);
   const [board, setBoard] = useState(Array(9).fill(null));
   const [placed, setPlaced] = useState({ 1: [], 2: [] }); // Tracks emoji placements
@@ -72,10 +73,14 @@ function App() {
 
     if (isWinner) {
       setWinner(turn);
+      setScore(prev => ({ ...prev, [turn]: prev[turn] + 1 }));
     } else {
       setTurn(prev => (prev === 1 ? 2 : 1));
     }
+
+    
   };
+  const resetScore = () => setScore({ 1: 0, 2: 0 });
 
   const readyToPlay = players[1] && players[2];
 
@@ -93,6 +98,11 @@ function App() {
           <GameBoard board={board} onCellClick={handleCellClick} />
         </>
       )}
+      <div className="scoreboard">
+  <span>Player 1: {score[1]}</span>
+  <span>Player 2: {score[2]}</span>
+  <button onClick={resetScore}>Reset Score</button>
+</div>
 
       <HelpModal />
     </div>
