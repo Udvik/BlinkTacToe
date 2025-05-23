@@ -20,6 +20,7 @@ function App() {
   const [winner, setWinner] = useState(null);
   const [disabledCells, setDisabledCells] = useState({ 1: null, 2: null });
   const [winningPattern, setWinningPattern] = useState([]); // <-- Add this line
+  const [darkMode, setDarkMode] = useState(false);
 
   const handleCategorySelect = (playerId, category) => {
     setPlayers(prev => ({ ...prev, [playerId]: category }));
@@ -90,7 +91,15 @@ function App() {
   const readyToPlay = players[1] && players[2];
 
   return (
-    <div className="app">
+    <div className={`app${darkMode ? ' dark' : ''}`}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 8 }}>
+        <button
+          className="dark-toggle-btn"
+          onClick={() => setDarkMode(dm => !dm)}
+        >
+          {darkMode ? '🌙 Dark Mode On' : '☀️ Light Mode'}
+        </button>
+      </div>
       <h1>Blink Tac Toe</h1>
 
       {!readyToPlay && (
@@ -98,15 +107,14 @@ function App() {
       )}
 
       {readyToPlay && (
-        <>
-          <StatusBar turn={turn} winner={winner} onReset={resetGame} />
-          <GameBoard board={board} onCellClick={handleCellClick} winningPattern={winningPattern} /> {winner && (
-  <div className="winner-gold-box">
-    🎉 Player {winner} wins! 🎉
-  </div>
+  <>
+    <StatusBar turn={turn} winner={winner} />
+    <GameBoard board={board} onCellClick={handleCellClick} winningPattern={winningPattern} />
+    <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0' }}>
+      <button onClick={resetGame} className="play-again-btn">Play Again</button>
+    </div>
+  </>
 )}
-        </>
-      )}
       <div className="scoreboard-gold">
         <span>Player 1: {score[1]}</span>
         <span>Player 2: {score[2]}</span>
