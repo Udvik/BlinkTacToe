@@ -98,7 +98,7 @@ function App() {
           <GameBoard board={board} onCellClick={handleCellClick} />
         </>
       )}
-      <div className="scoreboard">
+      <div className="scoreboard-gold">
   <span>Player 1: {score[1]}</span>
   <span>Player 2: {score[2]}</span>
   <button onClick={resetScore}>Reset Score</button>

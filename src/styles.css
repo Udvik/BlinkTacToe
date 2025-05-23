@@ -59,3 +59,33 @@ button {
 .help{
   text-align: left;
 }
+
+/* ...existing code... */
+.scoreboard-gold {
+  background: linear-gradient(90deg, #ffd700 0%, #fff8dc 100%);
+  border: 2px solid #bfa100;
+  border-radius: 12px;
+  padding: 16px 24px;
+  margin: 20px auto;
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  box-shadow: 0 2px 8px rgba(191, 161, 0, 0.2);
+}
+.scoreboard-gold button {
+  background: #fff8dc;
+  border: 1px solid #bfa100;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-weight: bold;
+  color: #a88f00;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.scoreboard-gold button:hover {
+  background: #ffe066;
+}
+/* ...existing code... */
