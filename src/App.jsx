@@ -19,6 +19,7 @@ function App() {
   const [placed, setPlaced] = useState({ 1: [], 2: [] }); // Tracks emoji placements
   const [winner, setWinner] = useState(null);
   const [disabledCells, setDisabledCells] = useState({ 1: null, 2: null });
+  const [winningPattern, setWinningPattern] = useState([]); // <-- Add this line
 
   const handleCategorySelect = (playerId, category) => {
     setPlayers(prev => ({ ...prev, [playerId]: category }));
@@ -30,6 +31,7 @@ function App() {
     setWinner(null);
     setDisabledCells({ 1: null, 2: null });
     setTurn(1);
+    setWinningPattern([]); // <-- Reset winning pattern
   };
 
   const handleCellClick = (index) => {
@@ -67,19 +69,22 @@ function App() {
       [0,4,8],[2,4,6]
     ];
 
-    const isWinner = winPatterns.some(pattern =>
-      pattern.every(idx => playerPositions.includes(idx))
-    );
+    let foundPattern = null;
+    const isWinner = winPatterns.some(pattern => {
+      const hasPattern = pattern.every(idx => playerPositions.includes(idx));
+      if (hasPattern) foundPattern = pattern;
+      return hasPattern;
+    });
 
     if (isWinner) {
       setWinner(turn);
       setScore(prev => ({ ...prev, [turn]: prev[turn] + 1 }));
+      setWinningPattern(foundPattern); // <-- Set winning pattern
     } else {
       setTurn(prev => (prev === 1 ? 2 : 1));
     }
-
-    
   };
+
   const resetScore = () => setScore({ 1: 0, 2: 0 });
 
   const readyToPlay = players[1] && players[2];
@@ -95,14 +100,18 @@ function App() {
       {readyToPlay && (
         <>
           <StatusBar turn={turn} winner={winner} onReset={resetGame} />
-          <GameBoard board={board} onCellClick={handleCellClick} />
+          <GameBoard board={board} onCellClick={handleCellClick} winningPattern={winningPattern} /> {winner && (
+  <div className="winner-gold-box">
+    🎉 Player {winner} wins! 🎉
+  </div>
+)}
         </>
       )}
       <div className="scoreboard-gold">
-  <span>Player 1: {score[1]}</span>
-  <span>Player 2: {score[2]}</span>
-  <button onClick={resetScore}>Reset Score</button>
-</div>
+        <span>Player 1: {score[1]}</span>
+        <span>Player 2: {score[2]}</span>
+        <button onClick={resetScore}>Reset Score</button>
+      </div>
 
       <HelpModal />
     </div>
